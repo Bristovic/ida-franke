@@ -1,0 +1,138 @@
+---
+title: "IDA Homework - Week 1"
+author: "Adam"
+output: pdf_document
+---
+
+# Task 1: Reproducing the table
+
+## The data set I: creating a table in RMarkdown
+
+### Overview of variables in the data set
+
+**Variable** | **Variable type** | **Values**
+:-----------:|:-----------------:|:----------------------------
+brain regions | nominal | (Rostral Middle Frontal, Precentral, Lateral Occipital, Transverse Temporal, Temporal Pole)
+surface area | volume | (5941.8, 4718.8, 4672.9, 799.48, 443.3)
+thickness | metric | (2.59, 2.74, 2.3, 2.52, 3.66)
+hemisphere | ordinal | (L, L, L, R, R)
+
+# Task 2: Loading packages
+
+## Loading relevant packages
+```{r, warning=FALSE, message=FALSE, include=FALSE}
+library(tidyverse)
+```
+
+# Task 3: Creating a tibble
+## The data set II: Creating a tibble in R
+
+```{r, include=FALSE}
+brain_data <- tibble(
+  brain_regions = factor(c("Rostral Middle Frontal", "Precentral", "Lateral Occipital", "Transverse Temporal", "Temporal Pole")),
+  surface_area = c(5941.8, 4718.8, 4672.9, 799.48, 443.3),
+  thickness = c(2.59, 2.74, 2.3, 2.52, 3.66),
+  hemisphere = c("L", "L", "L", "R", "R")
+)
+brain_data
+```
+
+# Task 4: Altering data
+
+Changing "Transverse temporal" to "Banks superior temporal"
+
+```{r, include=FALSE}
+brain_data$brain_regions <- fct_recode(brain_data$brain_regions, "Banks Superior Temporal" = "Transverse Temporal") %>%
+  print()
+```
+
+# Task 5: Indexing
+
+```{r, echo=FALSE}
+# number method
+brain_data[2, 3] %>%
+  print()
+
+# index by name
+brain_data[brain_data$brain_regions == 'Precentral', "thickness"] %>%
+  print()
+```
+
+# Task 6: Considering the data set
+## The data set III: Creating a tibble in R
+```{r}
+brain_data2 <- tibble(
+  brain_regions = factor(c("Rostral Middle Frontal", "Precentral", "Lateral Occipital", "Transverse Temporal", "Temporal Pole")),
+  surface_area = c(5941.8, 4718.8, 4672.9, 799.48, 443.3),
+  thickness = c(2.59, 2.74, 2.3, 2.52, 3.66),
+  hemisphere = c("L", "L", "L", "R", "R"),
+  volume = surface_area * thickness
+) %>% print()
+```
+
+# Task 7: Why wouldn't this code work for a dataframe
+Because dataframes don't allow for flexible creation (e.g. dynamic multiplying elements).
+
+# Task 8: Store specific code
+```{r}
+regions_v1 <- brain_data2$brain_regions %>% print()
+```
+
+# Task 9: Datatype
+```{r}
+typeof(regions_v1)
+```
+
+# Task 10: How many variables
+```{r}
+length(regions_v1)
+```
+
+# Task 11: How many elements total in hemisphere
+```{r}
+brain_data2$hemisphere %>% unique() %>% length() %>% print()
+```
+
+# Task 12: Describing code
+Code is meant to find what brain regions of the data set are in the right hemisphere.
+
+# Task 13: Using a function for volume
+```{r}
+# extract surface_area from dataset
+x <- brain_data2$surface_area
+# extract thickiness from dataset
+y <- brain_data2$thickness
+# create a function that multiplies them together 
+volume_calc <- function(area, thick) {
+  return(area*thick)
+}
+# call the function
+volume_calc(x, y)
+
+# create comparative list
+volume_compare <- list(
+  volume1 <- brain_data2$volume,
+  volume2 <- volume_calc(x, y)
+) %>% print()
+```
+
+# Task 14: Extracting 
+```{r}
+# listing true values
+volume_true <- c(17439, 14351, 12150, 23886, 2280.1)
+
+# extract calculated from list
+volume_calculated <- volume_compare$volume1 %>% print()
+# for some reason this is borked and I cannot for the life of me work out why
+
+# function that takes two variables and returns the difference
+volume_diff <- function(vol1, vol2){return(vol1-vol2)}
+```
+
+# Task 15: Tibbles and data
+```{r}
+brain_data3 <- tibble(
+  brain_regions = regions_v1,
+  calculated_volume_diff = volume_diff(volume_true,volume_calculated)
+) %>% print()
+```
