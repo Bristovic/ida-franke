@@ -3,4 +3,4 @@
 This repository is for the code written for the IDA course.
 
 The course itself is here:
-[Introduction to Data Analysis](https://michael-franke.github.io/intro-data-analysis/)https://michael-franke.github.io/intro-data-analysis/)
+[Introduction to Data Analysis](https://michael-franke.github.io/intro-data-analysis/)
