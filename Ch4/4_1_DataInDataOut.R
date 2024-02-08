@@ -1,4 +1,6 @@
 # reading and writing data
+library(readr)
+
 
 # reading and writing from CSV
 ex_data <- read_csv("PATH/FILENAME_RAW_DATA.csv")
